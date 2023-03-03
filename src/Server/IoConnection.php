@@ -11,6 +11,22 @@ class IoConnection implements ConnectionInterface {
      * @var \React\Socket\ConnectionInterface
      */
     protected $conn;
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $httpBuffer;
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $httpHeadersReceived;
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $remoteAddress;
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $resourceId;
 
 
     /**
@@ -35,4 +51,5 @@ class IoConnection implements ConnectionInterface {
     public function close() {
         $this->conn->end();
     }
+
 }
