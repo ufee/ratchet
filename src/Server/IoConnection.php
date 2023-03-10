@@ -27,7 +27,14 @@ class IoConnection implements ConnectionInterface {
      * @var \React\Socket\ConnectionInterface
      */
     public $resourceId;
-
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $WebSocket;
+    /**
+     * @var \React\Socket\ConnectionInterface
+     */
+    public $httpRequest;
 
     /**
      * @param \React\Socket\ConnectionInterface $conn
