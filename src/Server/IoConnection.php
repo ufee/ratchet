@@ -20,13 +20,13 @@ class IoConnection implements ConnectionInterface {
      */
     public $httpHeadersReceived;
     /**
-     * @var \React\Socket\ConnectionInterface
+     * @var string
      */
-    public $remoteAddress;
+    protected $remoteAddress;
     /**
-     * @var \React\Socket\ConnectionInterface
+     * @var int
      */
-    public $resourceId;
+    protected $resourceId;
     /**
      * @var \React\Socket\ConnectionInterface
      */
@@ -41,6 +41,34 @@ class IoConnection implements ConnectionInterface {
      */
     public function __construct(ReactConn $conn) {
         $this->conn = $conn;
+        $this->resourceId = (int)$this->conn->stream;
+
+        $uri = $conn->getRemoteAddress();
+        $this->remoteAddress = trim(
+            parse_url((strpos($uri, '://') === false ? 'tcp://' : '') . $uri, PHP_URL_HOST),
+            '[]'
+        );
+    }
+
+    /**
+     * @return React\Socket\ConnectionInterface
+     */
+    public function getReactConn(): ReactConn {
+        return $this->conn;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResourceId(): int {
+        return (int)$this->conn->stream;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRemoteAddress(bool $full = false): string {
+        return $full === false ? $this->remoteAddress : $this->conn->getRemoteAddress();
     }
 
     /**

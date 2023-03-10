@@ -3,6 +3,7 @@ namespace Ratchet\Wamp;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Ratchet\ConnectionInterface;
+use Throwable;
 
 /**
  * Enable support for the official WAMP sub-protocol in your application
@@ -54,7 +55,7 @@ class WampServer implements MessageComponentInterface, WsServerInterface {
     /**
      * {@inheritdoc}
      */
-    public function onError(ConnectionInterface $conn, \Exception $e) {
+    public function onError(ConnectionInterface $conn, Throwable $e) {
         $this->wampProtocol->onError($conn, $e);
     }
 

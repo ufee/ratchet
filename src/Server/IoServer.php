@@ -86,25 +86,18 @@ class IoServer {
  * @param \React\Socket\ConnectionInterface $conn
  */
     public function handleConnect($conn) {
-        $conn->decor = new IoConnection($conn);
-        $conn->decor->resourceId = (int)$conn->stream;
+        $ratchetConn = new IoConnection($conn);
 
-        $uri = $conn->getRemoteAddress();
-        $conn->decor->remoteAddress = trim(
-            parse_url((strpos($uri, '://') === false ? 'tcp://' : '') . $uri, PHP_URL_HOST),
-            '[]'
-        );
+        $this->app->onOpen($ratchetConn);
 
-        $this->app->onOpen($conn->decor);
-
-        $conn->on('data', function ($data) use ($conn) {
-            $this->handleData($data, $conn);
+        $conn->on('data', function ($data) use ($ratchetConn) {
+            $this->handleData($data, $ratchetConn);
         });
-        $conn->on('close', function () use ($conn) {
-            $this->handleEnd($conn);
+        $conn->on('close', function () use ($ratchetConn) {
+            $this->handleEnd($ratchetConn);
         });
-        $conn->on('error', function (Throwable $e) use ($conn) {
-            $this->handleError($e, $conn);
+        $conn->on('error', function (Throwable $e) use ($ratchetConn) {
+            $this->handleError($e, $ratchetConn);
         });
     }
 
@@ -114,11 +107,11 @@ class IoServer {
  * @param string $data
  * @param \React\Socket\ConnectionInterface $conn
  */
-    public function handleData($data, $conn) {
+    public function handleData($data, $ratchetConn) {
         try {
-            $this->app->onMessage($conn->decor, $data);
+            $this->app->onMessage($ratchetConn, $data);
         } catch (Throwable $e) {
-            $this->handleError($e, $conn);
+            $this->handleError($e, $ratchetConn);
         }
     }
 
@@ -126,23 +119,21 @@ class IoServer {
  * A connection has been closed by React
  * @param \React\Socket\ConnectionInterface $conn
  */
-    public function handleEnd($conn) {
+    public function handleEnd($ratchetConn) {
         try {
-            $this->app->onClose($conn->decor);
+            $this->app->onClose($ratchetConn);
         } catch (Throwable $e) {
-            $this->handleError($e, $conn);
+            $this->handleError($e, $ratchetConn);
         }
-
-        unset($conn->decor);
     }
 
 /**
  * An error has occurred, let the listening application know
- * @param Throwable                        $e
+ * @param Throwable $e
  * @param \React\Socket\ConnectionInterface $conn
  */
-    public function handleError(Throwable $e, $conn) {
-        $this->app->onError($conn->decor, $e);
+    public function handleError(Throwable $e, $ratchetConn) {
+        $this->app->onError($ratchetConn, $e);
     }
 
 }

@@ -9,6 +9,29 @@ use Ratchet\RFC6455\Messaging\Frame;
  * @property \StdClass $WebSocket
  */
 class WsConnection extends AbstractConnectionDecorator {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResourceId(): int {
+        return $this->getConnection()->getResourceId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRemoteAddress(bool $full = false): string {
+        $remoteAddress = $this->getConnection()->getRemoteAddress();
+        if ($full === true) {
+            return $remoteAddress;
+        }
+
+        return trim(
+            parse_url((strpos($remoteAddress, '://') === false ? 'tcp://' : '') . $remoteAddress, PHP_URL_HOST),
+            '[]'
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
