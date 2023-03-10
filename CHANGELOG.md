@@ -8,6 +8,11 @@ CHANGELOG
 
 ---
 
+* 0.5.2 (2023-03-10)
+  * BF: Correct and update for PHP8 compatibility
+  * BC: Get remote address by using $conn->getRemoteAddress() instead of using the $conn->remoteAddress
+  * BC: Get resource ID by using $conn->getResourceId() instead of using the $conn->resourceId
+
 * 0.4.4 (2021-12-11)
   * Correct and update dependencies for forward compatibility
   * Added context for React Socket server to App
