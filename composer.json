@@ -21,8 +21,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/ratchetphp/Ratchet/issues",
-    "chat": "https://gitter.im/reactphp/reactphp"
+    "issues": "https://github.com/ufee"
   },
   "autoload": {
     "psr-4": {
@@ -31,7 +30,7 @@
   },
   "require": {
     "php": ">=7.4",
-    "dcnl1980/rfc6455": "^0.3",
+    "ufee/rfc6455": "^0.3",
     "react/socket": "^1",
     "react/event-loop": "^1",
     "guzzlehttp/psr7": "^1.7|^2.0",
@@ -39,6 +38,6 @@
     "symfony/routing": "^2.6|^3.0|^4.0|^5.0|^6.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.0"
+    "phpunit/phpunit": "5.7.*",
   }
 }
