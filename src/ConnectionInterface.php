@@ -18,14 +18,14 @@ interface ConnectionInterface {
      * @param string $data
      * @return \Ratchet\ConnectionInterface
      */
-    function send($data);
+    public function send($data);
 
     /**
      * Get resource ID.
      *
      * @return int
      */
-    function getResourceId(): int;
+    public function getResourceId(): int;
 
     /**
      * Get remote address.
@@ -33,10 +33,16 @@ interface ConnectionInterface {
      * @param bool $full Get full address
      * @return string
      */
-    function getRemoteAddress(bool $full = false): string;
-
+    public function getRemoteAddress(bool $full = false): string;
+	
+    /**
+     * Get the httprequest of the incoming connection
+     * @return string
+     */
+    public function getHttpRequest();
+	
     /**
      * Close the connection
      */
-    function close();
+    public function close();
 }

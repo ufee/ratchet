@@ -22,6 +22,36 @@ class WampConnection extends AbstractConnectionDecorator {
 
         $this->send(json_encode(array(WAMP::MSG_WELCOME, $this->WAMP->sessionId, 1, \Ratchet\VERSION)));
     }
+	
+    /**
+     * {@inheritdoc}
+     */
+    public function getResourceId(): int {
+        return $this->getConnection()->getResourceId();
+    }
+	
+    /**
+     * {@inheritdoc}
+     */
+    public function getHttpRequest()
+    {
+        return $this->httpRequest;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRemoteAddress(bool $full = false): string {
+        $remoteAddress = $this->getConnection()->getRemoteAddress();
+        if ($full === true) {
+            return $remoteAddress;
+        }
+
+        return trim(
+            parse_url((strpos($remoteAddress, '://') === false ? 'tcp://' : '') . $remoteAddress, PHP_URL_HOST),
+            '[]'
+        );
+    }
 
     /**
      * Successfully respond to a call made by the client

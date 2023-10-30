@@ -16,6 +16,14 @@ class WsConnection extends AbstractConnectionDecorator {
     public function getResourceId(): int {
         return $this->getConnection()->getResourceId();
     }
+	
+    /**
+     * {@inheritdoc}
+     */
+    public function getHttpRequest()
+    {
+        return $this->httpRequest;
+    }
 
     /**
      * {@inheritdoc}
