@@ -56,12 +56,20 @@ class IoConnection implements ConnectionInterface {
     public function getReactConn(): ReactConn {
         return $this->conn;
     }
+	
+    /**
+     * {@inheritdoc}
+     */
+    public function getHttpRequest()
+    {
+        return $this->httpRequest;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getResourceId(): int {
-        return (int)$this->conn->stream;
+        return $this->resourceId;
     }
 
     /**
@@ -87,4 +95,14 @@ class IoConnection implements ConnectionInterface {
         $this->conn->end();
     }
 
+    /**
+     * Get value of hidden property
+	 * @param string $target
+     */
+	public function __get($target)
+	{
+		if (property_exists($this, $target)) {
+			return $this->{$target};
+		}
+	}
 }
