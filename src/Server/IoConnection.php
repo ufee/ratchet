@@ -43,7 +43,7 @@ class IoConnection implements ConnectionInterface {
         $this->conn = $conn;
         $this->resourceId = (int)$this->conn->stream;
 
-        $uri = $conn->getRemoteAddress();
+        $uri = (string)$conn->getRemoteAddress();
         $this->remoteAddress = trim(
             parse_url((strpos($uri, '://') === false ? 'tcp://' : '') . $uri, PHP_URL_HOST),
             '[]'
